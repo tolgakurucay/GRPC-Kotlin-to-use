@@ -19,8 +19,9 @@ package io.grpc.examples.helloworld
 import io.grpc.Server
 import io.grpc.ServerBuilder
 
+
 class HelloWorldServer(private val port: Int) {
-    val server: Server = ServerBuilder
+    private val server: Server = ServerBuilder
         .forPort(port)
         .addService(HelloWorldService())
         .build()
@@ -50,11 +51,53 @@ class HelloWorldServer(private val port: Int) {
             message = "Hello ${request.name}"
         }
     }
+
+
+
 }
 
-fun main() {
+/*fun main() {
     val port = System.getenv("PORT")?.toInt() ?: 50051
     val server = HelloWorldServer(port)
     server.start()
     server.blockUntilShutdown()
+}*/
+
+
+
+class TolgaKurucayServer(private val portForTolga: Int){
+    private val server : Server = ServerBuilder
+        .forPort(portForTolga)
+        .addService(TolgaKurucayService())
+        .build()
+
+
+    internal class TolgaKurucayService : GreeterGrpcKt.GreeterCoroutineImplBase() {
+        override suspend fun sayHello(request: HelloRequest) = helloReply {
+            message = "Hello Tolga, How're you?\n${request.name}"
+        }
+    }
+
+    fun start(){
+        server.start()
+        println("Server started, listening on $portForTolga")
+    }
+
+    private fun stop() {
+        server.shutdown()
+    }
+
+    fun blockUntilShutdown() {
+        server.awaitTermination()
+    }
+
 }
+
+fun main() {
+    val port = System.getenv("PORT")?.toInt() ?: 50051
+    val server = TolgaKurucayServer(port)
+    server.start()
+    server.blockUntilShutdown()
+}
+
+

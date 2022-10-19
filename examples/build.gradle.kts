@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.application") version "7.0.4" apply false // Older for IntelliJ Support
+    id("com.android.application") version "7.3.1" apply false // Older for IntelliJ Support
     id("com.google.protobuf") version "0.8.18" apply false
     kotlin("jvm") version "1.7.0" apply false
     id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
